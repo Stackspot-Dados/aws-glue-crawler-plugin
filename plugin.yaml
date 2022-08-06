@@ -1,0 +1,31 @@
+name: crawler
+description: Crawler para catalogação de dados no s3
+display-name: crawler
+picture: plugin.png
+category: SRE # Ref: https://docs.stackspot.com/latest/docs/creators-guide/yaml/#category
+compatibility:
+  - AWS
+about: docs/about.md
+usage: docs/usage.md
+use-case: docs/use-case.md
+implementation: docs/implementation.md
+technologies: # Ref: https://docs.stackspot.com/latest/docs/creators-guide/yaml/#technologies
+  - "Terraform"
+types:
+  - env
+inputs:
+  - label: Nome do Crawler
+    type: text
+    name: crawler_name
+  - label: Nome do Database
+    type: text
+    name: database_name
+  - label: Caminho do S3
+    type: text
+    name: s3_target
+  - label: role arn (Caso não possua é possivel inserir posteriormente)
+    type: text
+    name: rolearn
+    default: ""
+    required: false
+
