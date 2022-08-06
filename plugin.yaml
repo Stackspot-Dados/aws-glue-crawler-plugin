@@ -1,6 +1,6 @@
-name: crawler
-description: Crawler para catalogação de dados no s3
-display-name: crawler
+name: AWS Glue Crawler
+description: Glue Crawler para catalogação de dados
+display-name: AWS Glue Crawler
 picture: plugin.png
 category: SRE # Ref: https://docs.stackspot.com/latest/docs/creators-guide/yaml/#category
 compatibility:
@@ -14,18 +14,95 @@ technologies: # Ref: https://docs.stackspot.com/latest/docs/creators-guide/yaml/
 types:
   - env
 inputs:
-  - label: Nome do Crawler
+  - label: Selecione a Fonte
+    type: text
+    items:
+      - s3
+      - jdbc
+      - mongodb
+      - dynamodb
+    name: source
+
+  - label: Nome para Crawler
     type: text
     name: crawler_name
-  - label: Nome do Database
+
+  - label: Nome de Glue Database
     type: text
     name: database_name
-  - label: Caminho do S3
-    type: text
-    name: s3_target
-  - label: role arn (Caso não possua é possivel inserir posteriormente)
-    type: text
-    name: rolearn
-    default: ""
-    required: false
 
+  - label: "Você ja tem um role arn para adcionar agora?(Pode ser adicionada posteriomente) "
+    type: bool
+    name: "configure_role_arn"
+    default: "false"
+
+  - label: "Role arn:"
+    name: "rolearn"
+    type: text
+    condition:
+      variable: configure_role_arn
+      operator: "=="
+      value: true
+
+  - label: Caminho do bucket S3
+    type: text
+    name: path
+    condition:
+      variable: source
+      operator: "=="
+      value: s3
+  
+  - label: "Nome da conexaçao JDBC:"
+    name: "connection"
+    type: text
+    condition:
+      variable: source
+      operator: "=="
+      value: jdbc
+
+  - label: "nome do database"
+    name: "path"
+    type: text
+    condition:
+      variable: source
+      operator: "=="
+      value: jdbc
+
+  - label: "Nome da conexaçao MongoDb:"
+    name: "connection"
+    type: text
+    condition:
+      variable: source
+      operator: "=="
+      value: mongodb
+
+  - label: "nome do database"
+    name: "path"
+    type: text
+    condition:
+      variable: source
+      operator: "=="
+      value: mongodb
+
+  - label: "Nome da tabela DynamoDb:"
+    name: "path"
+    type: text
+    condition:
+      variable: source
+      operator: "=="
+      value: dynamodb
+
+  - label: "Delete behavior:"
+    name: "delete_behavior"
+    type: text
+    items:
+      - LOG
+      - DELETE_FROM_DATABASE
+      - DEPRECATE_IN_DATABASE
+
+  - label: "Update behavior:"
+    name: "update_behavior"
+    type: text
+    items:
+      - LOG
+      - UPDATE_IN_DATABASE
