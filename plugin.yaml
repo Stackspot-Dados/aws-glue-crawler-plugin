@@ -1,4 +1,4 @@
-name: AWS Glue Crawler
+name: aws-glue-crawler
 description: Glue Crawler para catalogação de dados
 display-name: AWS Glue Crawler
 picture: plugin.png
